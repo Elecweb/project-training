@@ -1,28 +1,52 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React , {Component} from 'react'
+import Dropzone from 'react-dropzone'
 
-class App extends Component {
+class Basic extends Component {
+  constructor() {
+    super()
+    this.state = {
+      files: []
+    }
+  }
+
+  onDrop(files) {
+    this.setState({files});
+    this.props.onChang({files})
+  }
+
+  onCancel() {
+    this.setState({
+      files: []
+    }); 
+  }
+
   render() {
+    const files = this.state.files.map(file => (
+      <li key={file.name}>
+        {file.name} - {file.size} bytes
+      </li>
+    ))
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <section>
+        <Dropzone
+          onDrop={this.onDrop.bind(this)}
+          onFileDialogCancel={this.onCancel.bind(this)}
+        >
+          {({getRootProps, getInputProps}) => (
+            <div {...getRootProps()}>
+              <input {...getInputProps()} />
+                <p>Drop files here, or click to select files</p>
+            </div>
+          )}
+        </Dropzone>
+        <aside>
+          <h4>Files</h4>
+          <ul>{files}</ul>
+        </aside>
+      </section>
     );
   }
 }
 
-export default App;
+export default Basic
