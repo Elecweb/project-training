@@ -1,30 +1,52 @@
-import React from 'react'
-import classNames from 'classnames'
-import Dropzone from 'react-dropzone'
+import React from "react";
+import Dropzone from "react-dropzone";
+import './Form.css'
 
-class MyDropzone extends React.Component {
-   onDrop = (acceptedFiles, rejectedFiles) => {
-   }
+class DropzoneUpload extends React.Component {
+  state = {
+    files: []
+  };
 
-   render() {
+  onDrop = (file, callback) => {
+    this.setState({
+      onChange: file.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }))
+    });
+    this.setState({
+      files: file.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }))
+    });
+    callback(file)
+  }
+
+  render() {
+    const { files } = this.state;
+
+    const thumbs = files.map(file => (
+      <div key={file.name}>
+        <div>
+          <img
+            src={file.preview}
+            className="Dropzone-img"
+            alt="ProfilePicture"
+          />
+        </div>
+      </div>
+    ));
     return (
-      <Dropzone onDrop={this.onDrop}>
-        {({getRootProps, getInputProps, isDragActive}) => {
-          return (
-            <div
-              {...getRootProps()}
-              className={classNames('dropzone', {'dropzone--isActive': isDragActive})}
-            >
+      <div>
+        <Dropzone
+          onDrop={(files) => this.onDrop(files, this.props.input.onChange)}
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div className="Form-Dropzone" {...getRootProps()}>
               <input {...getInputProps()} />
-              {
-                isDragActive ?
-                  <p>Drop files here...</p> :
-                  <p>Try dropping some files here, or click to select files to upload.</p>
-              }
+              <div >Select Phofile Picture</div>
             </div>
-          )
-        }}
-      </Dropzone>
+          )}
+        </Dropzone>
+        {thumbs}
+      </div>
     );
   }
 }
+
+export default DropzoneUpload

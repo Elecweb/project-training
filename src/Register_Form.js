@@ -1,105 +1,106 @@
 import React, { Component } from 'react'
 import { Form, Field } from 'react-final-form'
-import Dropzone from 'react-dropzone';
+import DropzoneUpload from './Dropzone';
 import './Form.css'
-import Styles from './Styles';
-import classNames from 'classnames'
-import Basic from './App';
+import $ from 'jquery'
+
 
 const showResults = (values) => {
-    window.alert(JSON.stringify(values, undefined, 2))
-}
-
-const onDrop = (file) => {
-    this.prop.input.onChange(file)
+    alert(JSON.stringify(values, undefined, 2))
 }
 
 const required = value => (value ? undefined : 'Required')
 
 class Register extends Component {
-    render() {
-        return (
-            <Styles>
-                <div style={{ marginTop: 50 }}> Register Form
-                    <Form onSubmit={showResults}>
-                        {({ handleSubmit, values }) => (
-                            <form onSubmit={handleSubmit} >
 
-                                <Field name="displaytName" validate={required}>{({ input, meta }) => (
+    state = {
+        files: [],
+    };
+
+    onDrop = (file, callback) => {
+        this.setState({
+            onChange: file.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }))
+        });
+        callback(file)
+    }
+
+    checkPasswordMatch = () => {
+        let password = $('#password').val();
+        let confirmPassword = $('#confirmpassword').val();
+        console.log("password===" + password, "confirmpassword===" + confirmPassword)
+        if (password != confirmPassword) {
+            $("#divCheckPasswordMatch").html("Passwords do not match");
+        }
+    }
+
+
+    render() {
+
+        return (
+            <div className="Form-box">
+                <Form onSubmit={showResults} >
+                    {({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+
+                            <div className="Form-headfont">Sign up</div>
+                            <div className="Form-box2">
+                                <Field name="displayName" validate={required}>{({ input, meta }) => (
                                     <div>
-                                        <label>Display Name</label>
-                                        <input type="text" {...input} placeholder="First Name"></input>
-                                        {meta.error && meta.touched && <span>Required</span>}
+                                        <label style={{ textAlign: "left" }}>Display Name</label>
+                                        <input type="text" {...input} className="Form-input" placeholder="First Name"
+                                            required pattern="[A-Za-z0-9]{4,20}" title="A-Z , a-z , 0-9 , between 4-20 character" />
                                     </div>
                                 )}
                                 </Field>
 
-                                <Field name="Email" validate={required}>{({ input, meta }) => (
+                                <Field name="Email" validate={required}>{({ input }) => (
                                     <div>
                                         <label>Email</label>
-                                        <input type="email" {...input} placeholder="example@gmail.com" />
-                                        {meta.error && meta.touched && <span>Required</span>}
+                                        <input type="email" {...input} className="Form-input" placeholder="example@gmail.com" />
                                     </div>
                                 )}
                                 </Field>
 
-                                <Field name="password" validate={required} >{({ input, meta }) => (
+                                <Field name="password" validate={required} >{({ input }) => (
                                     <div>
                                         <label>Passsword</label>
-                                        <input type="password" {...input} placeholder="Comfirm Password" />
-                                        {meta.error && meta.touched && <span>Required</span>}
+                                        <input type="password" {...input} className="Form-input" placeholder="Password"
+                                            required pattern="[A-Za-z0-9]{4,20}" title="A-Z , a-z , 0-9 , between 4-20 character"
+                                            id="password" />
                                     </div>
                                 )}
                                 </Field>
 
-                                <Field name="ConfirmPassword" validate={required} >{({ input, meta }) => (
+                                <Field name="ConfirmPassword" validate={required} >{({ input }) => (
                                     <div>
                                         <label>Confirm Passsword</label>
-                                        <input type="password" {...input} placeholder="Comfirm Password" />
-                                        {meta.error && meta.touched && <span>Required</span>}
+                                        <input type="password" {...input} className="Form-input" placeholder="Comfirm Password"
+                                            required id="confirmpassword" onInput={this.checkPasswordMatch} />
                                     </div>
                                 )}
                                 </Field>
-
-                                <Field name="newslatter" validate={required} >{({ input, meta }) => (
+                                <div>
+                                    <Field name="newslatter">{({ input }) => (
+                                        <div>
+                                            <label>Newslatter</label>
+                                            <input type="checkbox" {...input} />
+                                        </div>
+                                    )}
+                                    </Field>
+                                </div>
+                                <Field name="photo" validate={required}>{({ input, meta }) => (
                                     <div>
-                                        <label>Newslatter</label>
-                                        <input type="checkbox" {...input} />
-                                        {meta.error && meta.touched && <span>Required</span>}
+                                        <DropzoneUpload input={input} />
+                                        {meta.error && meta.touched && <p>Required</p>}
                                     </div>
                                 )}
                                 </Field>
-
-
-                                <Field name="ProfilePicture" validate={required} >{({ input, meta }) => (
-                                    <div>
-                                        <label>Picture</label>
-                                        <input type="file" {...input}></input>
-                                        {meta.error && meta.touched && <span>Required</span>}
-                                    </div>
-                                )}
-                                </Field>
-                               
-
-
-                               <Field name="upload"> {({input}) => (
-                                   <div>
-                                       <input type="file" {...input}/>
-                                   </div>
-                               )}
-                               </Field>
-
-
-                                <button type="submit" >Submit</button>
-                                <pre>{JSON.stringify(values, undefined, 2)}</pre>
-
-                            </form>
-                        )}
-                    </Form>
-
-                </div>
-            </Styles>
-
+                                <button type="submit" className="Form-submit" style={{ marginLeft: "35%" }} >Sign up</button>
+                            </div>
+                        </form>
+                    )}
+                </Form>
+            </div>
         )
     }
 }

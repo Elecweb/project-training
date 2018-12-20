@@ -3,9 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import Register from './Register_Form';
-import './Form.css';
-import Basic from './App';
-import MyDropzone from './Dropzone';
 
 ReactDOM.render(<Register/>, document.getElementById('root'));
 
