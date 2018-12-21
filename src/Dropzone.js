@@ -1,26 +1,40 @@
 import React from "react";
 import Dropzone from "react-dropzone";
-import './Form.css'
+import "./Form.css";
 
 class DropzoneUpload extends React.Component {
   state = {
-    files: []
+    files: [],
+    image: [{ name: "nothing at all" }]
+  };
+
+  ApiUpload = (file, callback) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("type", "account");
+    formData.append("sub_type", "profile");
+    return fetch("http://apiriderr.20scoopscnx.com/api/image/upload/profile?lang=en", {
+      method: "POST",
+      body: formData
+    })
+      .then(Response => Response.json())
+      .then(res => {
+        return res.data.original
+      });
   };
 
   onDrop = (file, callback) => {
     this.setState({
-      onChange: file.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }))
+      files: file.map(file =>
+        Object.assign(file, { preview: URL.createObjectURL(file) })
+      )
     });
-    this.setState({
-      files: file.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }))
-    });
-    callback(file)
-  }
+    this.ApiUpload(file[0]).then(callback);
+  };
 
   render() {
     const { files } = this.state;
-
-    const thumbs = files.map(file => (
+    const profilepicture = files.map(file => (
       <div key={file.name}>
         <div>
           <img
@@ -34,19 +48,23 @@ class DropzoneUpload extends React.Component {
     return (
       <div>
         <Dropzone
-          onDrop={(files) => this.onDrop(files, this.props.input.onChange)}
+          onDrop={files => this.onDrop(files, this.props.input.onChange)}
         >
           {({ getRootProps, getInputProps }) => (
-            <div className="Form-Dropzone" {...getRootProps()}>
+            <div
+              className="Form-Dropzone"
+              {...getRootProps()}
+              style={{ cursor: "pointer" }}
+            >
               <input {...getInputProps()} />
-              <div >Select Phofile Picture</div>
+              <div>Select Phofile Picture</div>
             </div>
           )}
         </Dropzone>
-        {thumbs}
+        {profilepicture}
       </div>
     );
   }
 }
 
-export default DropzoneUpload
+export default DropzoneUpload;
