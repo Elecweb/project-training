@@ -1,26 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import Dropzone from "react-dropzone";
 import "./Form.css";
+import { apiUpload } from "./Api";
 
-class DropzoneUpload extends React.Component {
+class DropzoneUpload extends Component {
   state = {
     files: [],
     image: [{ name: "nothing at all" }]
-  };
-
-  ApiUpload = (file, callback) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("type", "account");
-    formData.append("sub_type", "profile");
-    return fetch("http://apiriderr.20scoopscnx.com/api/image/upload/profile?lang=en", {
-      method: "POST",
-      body: formData
-    })
-      .then(Response => Response.json())
-      .then(res => {
-        return res.data.original
-      });
   };
 
   onDrop = (file, callback) => {
@@ -29,7 +15,7 @@ class DropzoneUpload extends React.Component {
         Object.assign(file, { preview: URL.createObjectURL(file) })
       )
     });
-    this.ApiUpload(file[0]).then(callback);
+    apiUpload(file[0]).then(callback);
   };
 
   render() {
@@ -48,7 +34,7 @@ class DropzoneUpload extends React.Component {
     return (
       <div>
         <Dropzone
-          onDrop={files => this.onDrop(files, this.props.input.onChange)}
+          onDrop={files => this.onDrop(files[0], this.props.input.onChange)}
         >
           {({ getRootProps, getInputProps }) => (
             <div

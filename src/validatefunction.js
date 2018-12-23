@@ -16,11 +16,18 @@ export function requiredpicture(value) {
 
 export function checkmatchpassword(value, allValues) {
   let password = allValues.password;
-  let confirmpass = value
+  let confirmpass = value;
 
   if (password !== confirmpass) {
     return "Password do not match";
   } else if (!confirmpass) {
     return "Required field ,  between 4-16 character";
+  }
+}
+
+export function requiredemail(value) {
+  let validemail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9])/;
+  if (!validemail.test(value)) {
+    return "Required E-mail";
   }
 }

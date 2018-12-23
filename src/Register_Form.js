@@ -5,7 +5,8 @@ import "./Form.css";
 import {
   required,
   requiredpicture,
-  checkmatchpassword
+  checkmatchpassword,
+  requiredemail
 } from "./validatefunction";
 
 const showResults = values => {
@@ -17,7 +18,7 @@ class Register extends Component {
     return (
       <div className="Form-box">
         <Form onSubmit={showResults}>
-          {({ handleSubmit, values }) => (
+          {({ handleSubmit }) => (
             <form onSubmit={handleSubmit}>
               <div className="Form-headfont">Sign up</div>
               <div className="Form-box2">
@@ -38,7 +39,7 @@ class Register extends Component {
                   )}
                 </Field>
 
-                <Field name="Email" validate={required}>
+                <Field name="Email" validate={requiredemail}>
                   {({ input, meta }) => (
                     <div>
                       <label>Email</label>
@@ -118,7 +119,6 @@ class Register extends Component {
                   Sign up
                 </button>
               </div>
-              <pre>{JSON.stringify(values, undefined, 2)}</pre>
             </form>
           )}
         </Form>
