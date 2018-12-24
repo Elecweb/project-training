@@ -17,19 +17,52 @@ export function apiUpload(file) {
 }
 
 export function apiRegister(file) {
-  return fetch("http://apiriderr.20scoopscnx.com/api/register", {
+  if (file.newslatter === true) {
+    let newslattercheck = 1;
+    return fetch("http://apiriderr.20scoopscnx.com/api/register?lang=en", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        display_name: file.displayName,
+        email: file.Email,
+        password: file.password,
+        password_confirmation: file.ConfirmPassword,
+        g_recaptcha_response: "LUoOhpwUbIe5sfgwsotJ2nDXx99jvflG",
+        newsletter: newslattercheck,
+        profile_image: file.photo
+      })
+    });
+  } else {
+    let newslattercheck = 0;
+    return fetch("http://apiriderr.20scoopscnx.com/api/register?lang=en", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        display_name: file.displayName,
+        email: file.Email,
+        password: file.password,
+        password_confirmation: file.ConfirmPassword,
+        g_recaptcha_response: "LUoOhpwUbIe5sfgwsotJ2nDXx99jvflG",
+        newsletter: newslattercheck,
+        profile_image: file.photo
+      })
+    });
+  }
+}
+
+export function apiLogin(file) {
+  return fetch("http://apiriderr.20scoopscnx.com/api/login-email?lang=en", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      display_name: file.displayName,
-      email: file.Email,
-      password: file.password,
-      password_confirmation: file.ConfirmPassword,
-      g_recaptcha_response: "LUoOhpwUbIe5sfgwsotJ2nDXx99jvflG",
-      newslatter: file.newslatter,
-      profile_image: file.photo
+      email: file.login_email,
+      password: file.login_password
     })
   });
 }

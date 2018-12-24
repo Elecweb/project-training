@@ -1,6 +1,6 @@
 export function required(value) {
-  if (!value || value.length < 4 || value.length > 16) {
-    return "Required field ,  between 4-16 character";
+  if (!value || value.length < 6 || value.length > 16) {
+    return "Required field ,  between 6-16 character";
   } else {
     return null;
   }
@@ -32,10 +32,11 @@ export function requiredemail(value) {
   }
 }
 
-export function newslatterCheck(value) {
-  if (value == true) {
-    return 1
+export function checkNewlatter(value) {
+  let newlatter = JSON.stringify(value.newslatter);
+  if (newlatter == true) {
+    return 1;
   } else {
-    return 0
+    return 0;
   }
 }
