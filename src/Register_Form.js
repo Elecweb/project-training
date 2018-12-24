@@ -6,11 +6,14 @@ import {
   required,
   requiredpicture,
   checkmatchpassword,
-  requiredemail
+  requiredemail,
+  newslatterCheck
 } from "./validatefunction";
+import { newObject, apiRegister } from "./Api";
 
 const showResults = values => {
-  alert(JSON.stringify(values, undefined, 2));
+   alert(JSON.stringify(values))
+  /*apiRegister(values);*/
 };
 
 class Register extends Component {
@@ -94,8 +97,8 @@ class Register extends Component {
                   <Field name="newslatter">
                     {({ input }) => (
                       <div>
-                        <label>Newslatter</label>
-                        <input type="checkbox" {...input} />
+                        <input type="checkbox" name="newlatterCheck" onClick={newslatterCheck} value='false' {...input} />
+                        <label> Subscribe to newsletter?</label>
                       </div>
                     )}
                   </Field>

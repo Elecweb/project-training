@@ -34,7 +34,7 @@ class DropzoneUpload extends Component {
     return (
       <div>
         <Dropzone
-          onDrop={files => this.onDrop(files[0], this.props.input.onChange)}
+          onDrop={files => this.onDrop(files, this.props.input.onChange)}
         >
           {({ getRootProps, getInputProps }) => (
             <div
