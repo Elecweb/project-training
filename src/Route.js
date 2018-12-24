@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route , Switch , Link} from "react-router-dom";
+import { Route , Switch } from "react-router-dom";
 import Register from "./Register_Form";
 import Login_Form from "./Login_Form";
 

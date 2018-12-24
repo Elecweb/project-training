@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Redirect } from "react-router-dom";
 import { apiLogin } from "./Api";
-import { required } from "./validatefunction";
+import { required, requiredemail } from "./validatefunction";
 
 const showResults = values => {
   apiLogin(values);
@@ -28,18 +28,20 @@ class Login_Form extends Component {
             <form onSubmit={handleSubmit}>
               <div className="Form-headfont">Login</div>
               <div className="Form-box2">
-                <Field name="login_email">
-                  {({ input }) => (
+                <Field name="login_email" validate={requiredemail}>
+                  {({ input, meta }) => (
                     <div>
                       <label>E-mail</label>
                       <input
-                        type="email"
                         className="Form-input"
                         {...input}
                         placeholder="E-mail"
                         id="loginemail"
                         required
                       />
+                      {meta.error && meta.touched && (
+                        <span style={{ color: "red" }}>{meta.error}</span>
+                      )}
                     </div>
                   )}
                 </Field>

@@ -6,8 +6,7 @@ import {
   required,
   requiredpicture,
   checkmatchpassword,
-  requiredemail,
-  checkNewlatter
+  requiredemail
 } from "./validatefunction";
 import { apiRegister } from "./Api";
 import { Redirect } from "react-router-dom";
