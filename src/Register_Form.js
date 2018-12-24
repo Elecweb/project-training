@@ -16,9 +16,6 @@ class Register extends Component {
   state = { redirectToReferrer: false };
 
   showResults = values => {
-    if (values.newslatter === true) {
-    } else {
-    }
     apiRegister(values);
     alert("Register Success");
     this.setState({ redirectToReferrer: true });

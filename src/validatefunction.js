@@ -31,12 +31,3 @@ export function requiredemail(value) {
     return "Required E-mail";
   }
 }
-
-export function checkNewlatter(value) {
-  let newlatter = JSON.stringify(value.newslatter);
-  if (newlatter == true) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
