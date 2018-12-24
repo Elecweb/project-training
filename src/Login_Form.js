@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
 import { Redirect } from "react-router-dom";
 import { apiLogin } from "./Api";
+import { required } from "./validatefunction";
 
 const showResults = values => {
   apiLogin(values);
@@ -42,7 +43,7 @@ class Login_Form extends Component {
                     </div>
                   )}
                 </Field>
-                <Field name="login_password">
+                <Field name="login_password" validate={required}>
                   {({ input }) => (
                     <div>
                       <input
