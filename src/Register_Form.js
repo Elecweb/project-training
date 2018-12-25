@@ -10,6 +10,7 @@ import {
 } from "./validatefunction";
 import { apiRegister } from "./Api";
 import { Redirect } from "react-router-dom";
+import ErrorMessage from "./Errormessage";
 
 class Register extends Component {
   state = { redirectToReferrer: false };
@@ -21,12 +22,9 @@ class Register extends Component {
   };
 
   render() {
-    let { from } = this.props.location.state || {
-      from: { pathname: "/Login" }
-    };
     let { redirectToReferrer } = this.state;
 
-    if (redirectToReferrer) return <Redirect to={from} />;
+    if (redirectToReferrer) return <Redirect to="Login" />;
 
     return (
       <div>
@@ -48,9 +46,7 @@ class Register extends Component {
                           className="Form-input"
                           placeholder="First Name"
                         />
-                        {meta.error && meta.touched && (
-                          <span style={{ color: "red" }}>{meta.error}</span>
-                        )}
+                        <ErrorMessage meta={meta} />
                       </div>
                     )}
                   </Field>
@@ -65,9 +61,7 @@ class Register extends Component {
                           className="Form-input"
                           placeholder="example@gmail.com"
                         />
-                        {meta.error && meta.touched && (
-                          <span style={{ color: "red" }}>{meta.error}</span>
-                        )}
+                        <ErrorMessage meta={meta} />
                       </div>
                     )}
                   </Field>
@@ -82,9 +76,7 @@ class Register extends Component {
                           className="Form-input"
                           placeholder="Password"
                         />
-                        {meta.error && meta.touched && (
-                          <span style={{ color: "red" }}>{meta.error}</span>
-                        )}
+                        <ErrorMessage meta={meta} />
                       </div>
                     )}
                   </Field>
@@ -100,9 +92,7 @@ class Register extends Component {
                           placeholder="Comfirm Password"
                           id="confirmpassword"
                         />
-                        {meta.error && meta.touched && (
-                          <span style={{ color: "red" }}>{meta.error}</span>
-                        )}
+                        <ErrorMessage meta={meta} />
                       </div>
                     )}
                   </Field>
@@ -125,9 +115,7 @@ class Register extends Component {
                     {({ input, meta }) => (
                       <div>
                         <DropzoneUpload input={input} />
-                        {meta.error && meta.touched && (
-                          <span style={{ color: "red" }}>{meta.error}</span>
-                        )}
+                        <ErrorMessage meta={meta} />
                       </div>
                     )}
                   </Field>

@@ -5,36 +5,23 @@ import { apiUpload } from "./Api";
 
 class DropzoneUpload extends Component {
   state = {
-    files: [],
-    image: [{ name: "nothing at all" }]
+    files: []
   };
 
   onDrop = (file, callback) => {
     this.setState({
-      files: file.map(file =>
-        Object.assign(file, { preview: URL.createObjectURL(file) })
-      )
+      files: (file, { preview: URL.createObjectURL(file) })
     });
-    apiUpload(file[0]).then(callback);
+    apiUpload(file).then(callback);
   };
 
   render() {
     const { files } = this.state;
-    const profilepicture = files.map(file => (
-      <div key={file.name}>
-        <div>
-          <img
-            src={file.preview}
-            className="Dropzone-img"
-            alt="ProfilePicture"
-          />
-        </div>
-      </div>
-    ));
+    const profilepicture = files.preview;
     return (
       <div>
         <Dropzone
-          onDrop={files => this.onDrop(files, this.props.input.onChange)}
+          onDrop={files => this.onDrop(files[0], this.props.input.onChange)}
         >
           {({ getRootProps, getInputProps }) => (
             <div
@@ -47,7 +34,7 @@ class DropzoneUpload extends Component {
             </div>
           )}
         </Dropzone>
-        {profilepicture}
+        <img src={profilepicture} />
       </div>
     );
   }

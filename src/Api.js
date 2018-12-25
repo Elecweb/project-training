@@ -54,15 +54,15 @@ export function apiRegister(file) {
   }
 }
 
-export function apiLogin(file) {
+export function apiLogin(data) {
   return fetch("http://apiriderr.20scoopscnx.com/api/login-email?lang=en", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      email: file.login_email,
-      password: file.login_password
+      email: data.login_email,
+      password: data.login_password
     })
   });
 }

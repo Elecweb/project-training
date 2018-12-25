@@ -26,8 +26,7 @@ export function checkmatchpassword(value, allValues) {
 }
 
 export function requiredemail(value) {
-  let validemail = /^([a-zA-Z0-9])\@+(([a-zA-Z0-9])+\.)+([a-zA-Z0-9])/;
-  if (!validemail.test(value)) {
+  let validemail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9])/;  if (!validemail.test(value)) {
     return "Required E-mail";
   }
 }
