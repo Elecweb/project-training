@@ -9,11 +9,11 @@ import {
   requiredemail
 } from "./validatefunction";
 import { apiRegister } from "./Api";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import ErrorMessage from "./Errormessage";
 
 class Register extends Component {
-  state = { redirectToReferrer: false };
+  state = { redirectToReferrer: false, keepToken: [] };
 
   showResults = values => {
     apiRegister(values);
@@ -21,7 +21,23 @@ class Register extends Component {
     this.setState({ redirectToReferrer: true });
   };
 
+  componentDidMount = () => {
+    fetch("http://apiriderr.20scoopscnx.com/api/me", {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("Id_token")
+      }
+    })
+      .then(Response => Response.json())
+      .then(res => {
+        this.setState({ keepToken: res.success });
+      });
+  };
+
   render() {
+    if (this.state.keepToken === true) {
+      this.props.history.push("/Profile");
+    }
     let { redirectToReferrer } = this.state;
 
     if (redirectToReferrer) return <Redirect to="Login" />;
@@ -50,7 +66,6 @@ class Register extends Component {
                       </div>
                     )}
                   </Field>
-
                   <Field name="Email" validate={requiredemail}>
                     {({ input, meta }) => (
                       <div>
@@ -65,7 +80,6 @@ class Register extends Component {
                       </div>
                     )}
                   </Field>
-
                   <Field name="password" validate={required}>
                     {({ input, meta }) => (
                       <div>
@@ -80,7 +94,6 @@ class Register extends Component {
                       </div>
                     )}
                   </Field>
-
                   <Field name="ConfirmPassword" validate={checkmatchpassword}>
                     {({ input, meta }) => (
                       <div>
@@ -110,7 +123,6 @@ class Register extends Component {
                       )}
                     </Field>
                   </div>
-
                   <Field name="photo" validate={requiredpicture}>
                     {({ input, meta }) => (
                       <div>
@@ -126,6 +138,17 @@ class Register extends Component {
                   >
                     Sign up
                   </button>
+                  <div style={{ textAlign: "center" }}>
+                    Already have an account?
+                  </div>
+                  <Link to="/Login">
+                    <button
+                      className="Form-submit"
+                      style={{ marginLeft: "35%" }}
+                    >
+                      Login
+                    </button>
+                  </Link>
                 </div>
               </form>
             )}

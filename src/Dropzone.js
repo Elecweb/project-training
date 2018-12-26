@@ -20,6 +20,7 @@ class DropzoneUpload extends Component {
     const profilepicture = files.preview;
     return (
       <div>
+        <img src={profilepicture} className="Dropzone-img" />
         <Dropzone
           onDrop={files => this.onDrop(files[0], this.props.input.onChange)}
         >
@@ -34,7 +35,6 @@ class DropzoneUpload extends Component {
             </div>
           )}
         </Dropzone>
-        <img src={profilepicture} />
       </div>
     );
   }

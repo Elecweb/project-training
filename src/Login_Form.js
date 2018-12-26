@@ -1,30 +1,44 @@
 import React, { Component } from "react";
 import { Form, Field } from "react-final-form";
-import { Redirect } from "react-router-dom";
-import { apiLogin } from "./Api";
+import { FORM_ERROR } from "final-form";
+import { Link, withRouter } from "react-router-dom";
+import { apiLogin } from "./apiLogin";
 import { required, requiredemail } from "./validatefunction";
+import { connect } from "react-redux";
+import ErrorMessage from "./Errormessage";
 
-const showResults = values => {
-  apiLogin(values);
-};
 class Login_Form extends Component {
-  state = { redirectToReferrer: false };
+  state = { keepToken: [] };
+  showResults = values => {
+    return apiLogin(values)
+      .then(res => this.props.saveData(res))
+      .then(() => this.props.history.push("/Profile"))
+      .catch(() => ({
+        [FORM_ERROR]: "Login Fail!!!"
+      }));
+  };
 
-  backRegister = () => {
-    this.setState({ redirectToReferrer: true });
+  componentDidMount = () => {
+    fetch("http://apiriderr.20scoopscnx.com/api/me", {
+      method: "GET",
+      headers: {
+        Authorization: localStorage.getItem("Id_token")
+      }
+    })
+      .then(Response => Response.json())
+      .then(res => {
+        this.setState({ keepToken: res.success });
+      });
   };
 
   render() {
-    let { form } = this.props.location.state || {
-      form: { pathname: "/Register" }
-    };
-    let { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) return <Redirect to={form} />;
+    if (this.state.keepToken === true) {
+      this.props.history.push("/Profile");
+    }
     return (
       <div className="Form-box">
-        <Form onSubmit={showResults}>
-          {({ handleSubmit }) => (
+        <Form onSubmit={this.showResults}>
+          {({ handleSubmit, submitError }) => (
             <form onSubmit={handleSubmit}>
               <div className="Form-headfont">Login</div>
               <div className="Form-box2">
@@ -39,28 +53,31 @@ class Login_Form extends Component {
                         id="loginemail"
                         required
                       />
-                      {meta.error && meta.touched && (
-                        <span style={{ color: "red" }}>{meta.error}</span>
-                      )}
+                      <ErrorMessage meta={meta} />
                     </div>
                   )}
                 </Field>
                 <Field name="login_password" validate={required}>
-                  {({ input }) => (
+                  {({ input, meta }) => (
                     <div>
+                      <label>Password</label>
                       <input
                         type="password"
                         className="Form-input"
                         {...input}
                         placeholder="Password"
                         required
-                        pattern="[A-Za-z0-9]{4-20}"
-                        title="A-Z , a-z , 0-9 between 4-20 character"
                         id="loginpassword"
                       />
+                      <ErrorMessage meta={meta} />
                     </div>
                   )}
                 </Field>
+                {submitError && (
+                  <div style={{ color: "red", textAlign: "center" }}>
+                    {submitError}
+                  </div>
+                )}
                 <button
                   className="Form-submit"
                   type="submit"
@@ -69,14 +86,11 @@ class Login_Form extends Component {
                 >
                   Login
                 </button>
-                <button
-                  className="Form-submit"
-                  type="submit"
-                  onClick={this.backRegister}
-                  style={{ marginLeft: "35%" }}
-                >
-                  Register
-                </button>
+                <Link to="/Register">
+                  <button className="Form-submit" style={{ marginLeft: "35%" }}>
+                    Register
+                  </button>
+                </Link>
               </div>
             </form>
           )}
@@ -86,4 +100,22 @@ class Login_Form extends Component {
   }
 }
 
-export default Login_Form;
+const mapStateToProps = state => ({
+  data: state.saveData
+});
+
+const mapDispatchToProps = dispatch => ({
+  saveData(res) {
+    dispatch({
+      type: "Login",
+      data: res
+    });
+  }
+});
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Login_Form)
+);
