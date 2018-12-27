@@ -19,20 +19,19 @@ class Login_Form extends Component {
   };
 
   componentDidMount = () => {
-    fetch("http://apiriderr.20scoopscnx.com/api/me", {
+    fetch("http://apiriderr.20scoopscnx.com/api/me?lang=en", {
       method: "GET",
       headers: {
         Authorization: localStorage.getItem("Id_token")
       }
     })
       .then(Response => Response.json())
-      .then(res => {
-        this.setState({ keepToken: res.success });
-      });
+      .then(res => this.setState({ keepToken: res.success }));
   };
 
   render() {
     if (this.state.keepToken === true) {
+      window.alert("You are already login");
       this.props.history.push("/Profile");
     }
     return (

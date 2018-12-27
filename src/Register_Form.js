@@ -8,17 +8,17 @@ import {
   checkmatchpassword,
   requiredemail
 } from "./validatefunction";
-import { apiRegister } from "./Api";
-import { Redirect, Link } from "react-router-dom";
+import { apiRegister, apiRegisterDone } from "./Api";
+import { Link } from "react-router-dom";
 import ErrorMessage from "./Errormessage";
 
 class Register extends Component {
   state = { redirectToReferrer: false, keepToken: [] };
 
   showResults = values => {
-    apiRegister(values);
-    alert("Register Success");
-    this.setState({ redirectToReferrer: true });
+    return apiRegisterDone(values)
+      .then(() => this.props.history.push("/Login"))
+      .catch(() => this.props.history.push("/Register"));
   };
 
   componentDidMount = () => {
@@ -36,11 +36,13 @@ class Register extends Component {
 
   render() {
     if (this.state.keepToken === true) {
+      window.alert("You are already login");
       this.props.history.push("/Profile");
     }
-    let { redirectToReferrer } = this.state;
 
-    if (redirectToReferrer) return <Redirect to="Login" />;
+    if (this.state.redirectToReferrer === true) {
+      this.props.history.push("/login");
+    }
 
     return (
       <div>

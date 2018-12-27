@@ -10,7 +10,7 @@ class Profile extends Component {
   };
 
   componentDidMount = () => {
-    fetch("http://apiriderr.20scoopscnx.com/api/me", {
+    fetch("http://apiriderr.20scoopscnx.com/api/me?lang=en", {
       method: "GET",
       headers: {
         Authorization: localStorage.getItem("Id_token")
@@ -23,27 +23,39 @@ class Profile extends Component {
 
   render() {
     const userdata = this.props.data;
-    
+
     return (
       <div className="Form-box">
         <form>
           <img className="Dropzone-img" src={userdata.profile_image} />
-          <div className="Form-input">
-            Display name: {userdata.display_name}{" "}
+          <div />
+          Display name:
+          <div className="Form-input">{userdata.display_name} </div>
+          <div>
+            Email <span className="Form-input">{userdata.email}</span>
           </div>
-          <div className="Form-input">Email: {userdata.email} </div>
-          <div className="Form-input">Facebook {userdata.facebook} </div>
-          <div className="Form-input">Google Puls {userdata.google_plus} </div>
-          <div className="Form-input">ID {userdata.id}</div>
-          <div className="Form-input">Instragram{userdata.instragram}</div>
-          <div className="Form-input">Linkedin{userdata.linkedin}</div>
-          <div className="Form-input">
-            Recive Newsletter{userdata.newsletter}
+          <div>
+            Facebook <div className="Form-input">{userdata.facebook} </div>
           </div>
-          <div className="Form-input">Twitter{userdata.twitter}</div>
+          <div>
+            Google Puls
+            <div className="Form-input">{userdata.google_plus}</div>
+          </div>
+          <div>
+            ID <div className="Form-input">{userdata.id}</div>
+          </div>
+          <div>
+            Instragram<div className="Form-input">{userdata.instragram}</div>
+          </div>
+          <div>
+            Linkedin<div className="Form-input">{userdata.linkedin}</div>
+          </div>
+          <div>
+            Twitter<div className="Form-input">{userdata.twitter}</div>
+          </div>
         </form>
         <Link to="/Login">
-          <button onClick={this.onLogout} className="Form-submit">
+          <button onClick={this.onLogout} className="Form-logout">
             Logout
           </button>
         </Link>
