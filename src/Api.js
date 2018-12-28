@@ -16,23 +16,6 @@ export function apiUpload(file) {
     });
 }
 
-export function checkLogin(data) {
-  const loginStatus = data.success;
-  if (loginStatus) {
-    setToken(data);
-  } else {
-    throw Error;
-  }
-}
-
-export function setToken(data) {
-  localStorage.setItem("Id_token", data.data.token);
-}
-
-export function aloha(file) {
-  return apiRegister(file);
-}
-
 export function apiRegister(file) {
   if (file.newslatter === true) {
     let newslattercheck = 1;
@@ -69,7 +52,6 @@ export function apiRegisterDone(file) {
 export function duplicateEmail(success) {
   if (success === false) {
     alert("Already have an e-mail");
-    throw new Error();
   } else {
     alert("Register success , Please verify email");
   }

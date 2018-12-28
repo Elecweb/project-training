@@ -9,18 +9,6 @@ class Profile extends Component {
     localStorage.removeItem("Id_token");
   };
 
-  componentDidMount = () => {
-    fetch("http://apiriderr.20scoopscnx.com/api/me?lang=en", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("Id_token")
-      }
-    })
-      .then(Response => Response.json())
-      .then(res => this.props.saveData(res.data))
-      .catch(() => this.props.history.push("/Login"));
-  };
-
   render() {
     const userdata = this.props.data;
 
@@ -68,16 +56,7 @@ const mapStateToProps = state => ({
   data: state.saveData
 });
 
-const mapDispatchToProps = dispatch => ({
-  saveData(res) {
-    dispatch({
-      type: "Login",
-      data: res
-    });
-  }
-});
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Profile);

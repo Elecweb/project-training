@@ -8,12 +8,15 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers";
+import AuthCheck from "./AuthCheck";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const AppWithRouter = () => (
   <BrowserRouter>
-    <First />
+    <AuthCheck>
+      <First />
+    </AuthCheck>
   </BrowserRouter>
 );
 

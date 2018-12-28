@@ -8,32 +8,15 @@ import { connect } from "react-redux";
 import ErrorMessage from "./Errormessage";
 
 class Login_Form extends Component {
-  state = { keepToken: [] };
   showResults = values => {
     return apiLogin(values)
-      .then(res => this.props.saveData(res))
       .then(() => this.props.history.push("/Profile"))
       .catch(() => ({
-        [FORM_ERROR]: "Login Fail!!!"
+        [FORM_ERROR]: "Unknow e-mail or unvarified e-mail"
       }));
   };
 
-  componentDidMount = () => {
-    fetch("http://apiriderr.20scoopscnx.com/api/me?lang=en", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("Id_token")
-      }
-    })
-      .then(Response => Response.json())
-      .then(res => this.setState({ keepToken: res.success }));
-  };
-
   render() {
-    if (this.state.keepToken === true) {
-      window.alert("You are already login");
-      this.props.history.push("/Profile");
-    }
     return (
       <div className="Form-box">
         <Form onSubmit={this.showResults}>
@@ -103,18 +86,9 @@ const mapStateToProps = state => ({
   data: state.saveData
 });
 
-const mapDispatchToProps = dispatch => ({
-  saveData(res) {
-    dispatch({
-      type: "Login",
-      data: res
-    });
-  }
-});
-
 export default withRouter(
   connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
   )(Login_Form)
 );

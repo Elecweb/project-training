@@ -13,37 +13,13 @@ import { Link } from "react-router-dom";
 import ErrorMessage from "./Errormessage";
 
 class Register extends Component {
-  state = { redirectToReferrer: false, keepToken: [] };
-
   showResults = values => {
     return apiRegisterDone(values)
       .then(() => this.props.history.push("/Login"))
       .catch(() => this.props.history.push("/Register"));
   };
 
-  componentDidMount = () => {
-    fetch("http://apiriderr.20scoopscnx.com/api/me", {
-      method: "GET",
-      headers: {
-        Authorization: localStorage.getItem("Id_token")
-      }
-    })
-      .then(Response => Response.json())
-      .then(res => {
-        this.setState({ keepToken: res.success });
-      });
-  };
-
   render() {
-    if (this.state.keepToken === true) {
-      window.alert("You are already login");
-      this.props.history.push("/Profile");
-    }
-
-    if (this.state.redirectToReferrer === true) {
-      this.props.history.push("/login");
-    }
-
     return (
       <div>
         <div className="Form-box">

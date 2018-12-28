@@ -19,7 +19,7 @@ export function checkLogin(data) {
   if (loginStatus) {
     setToken(data);
   } else {
-    throw new Error();
+    throw Error;
   }
 }
 
