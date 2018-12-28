@@ -11,8 +11,9 @@ class Login_Form extends Component {
   showResults = values => {
     return apiLogin(values)
       .then(() => this.props.history.push("/Profile"))
+      .then(() => window.location.reload())
       .catch(() => ({
-        [FORM_ERROR]: "Unknow e-mail or unvarified e-mail"
+        [FORM_ERROR]: "Login Fail!"
       }));
   };
 
@@ -33,7 +34,6 @@ class Login_Form extends Component {
                         {...input}
                         placeholder="E-mail"
                         id="loginemail"
-                        required
                       />
                       <ErrorMessage meta={meta} />
                     </div>
@@ -48,7 +48,6 @@ class Login_Form extends Component {
                         className="Form-input"
                         {...input}
                         placeholder="Password"
-                        required
                         id="loginpassword"
                       />
                       <ErrorMessage meta={meta} />

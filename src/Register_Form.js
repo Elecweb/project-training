@@ -8,7 +8,7 @@ import {
   checkmatchpassword,
   requiredemail
 } from "./validatefunction";
-import { apiRegister, apiRegisterDone } from "./Api";
+import { apiRegisterDone } from "./Api";
 import { Link } from "react-router-dom";
 import ErrorMessage from "./Errormessage";
 

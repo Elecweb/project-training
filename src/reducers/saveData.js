@@ -4,7 +4,6 @@ const saveData = (state = [], action) => {
       if (action.data !== undefined) {
         return action.data;
       } else {
-        return [{}];
       }
     default:
       return state;
