@@ -17,12 +17,10 @@ export function apiUpload(file) {
 }
 
 export function apiRegister(file) {
-  if (file.newslatter === true) {
-    let newslattercheck = 1;
-    return newslattercheck;
+  if (file.newslatter) {
+    return 1;
   } else {
-    let newslattercheck = 0;
-    return newslattercheck;
+    return 0;
   }
 }
 

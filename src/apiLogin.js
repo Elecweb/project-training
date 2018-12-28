@@ -12,6 +12,7 @@ export function apiLogin(data) {
     .then(Response => Response.json())
     .then(res => {
       checkLogin(res);
+      return res;
     });
 }
 export function checkLogin(data) {

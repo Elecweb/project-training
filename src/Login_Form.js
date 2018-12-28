@@ -10,8 +10,13 @@ import ErrorMessage from "./Errormessage";
 class Login_Form extends Component {
   showResults = values => {
     return apiLogin(values)
-      .then(() => this.props.history.push("/Profile"))
-      .then(() => window.location.reload())
+      .then(res => {
+        this.props.history.push("/Profile");
+        return res;
+      })
+      .then(res => {
+        this.props.saveData(res.data);
+      })
       .catch(() => ({
         [FORM_ERROR]: "Login Fail!"
       }));
@@ -85,9 +90,18 @@ const mapStateToProps = state => ({
   data: state.saveData
 });
 
+const mapDispatchToProps = dispatch => ({
+  saveData(res) {
+    dispatch({
+      type: "Login",
+      data: res
+    });
+  }
+});
+
 export default withRouter(
   connect(
     mapStateToProps,
-    null
+    mapDispatchToProps
   )(Login_Form)
 );

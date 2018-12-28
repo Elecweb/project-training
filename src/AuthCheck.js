@@ -12,16 +12,26 @@ class AuthCheck extends Component {
       }
     })
       .then(Response => Response.json())
-      .then(res => this.aloha(res.success) & this.props.saveData(res.data));
+      .then(res => {
+        if (res.success === false) {
+          throw new Error();
+        } else {
+          return res;
+        }
+      })
+      .then(res => {
+        this.props.history.push("/Profile");
+        this.props.saveData(res.data);
+      })
+      .catch(() => {
+        const pathName = this.props.location.pathname;
+        if (pathName) {
+        } else {
+          this.props.history.push("Login");
+        }
+      });
   };
 
-  aloha(token) {
-    if (token === true) {
-      this.props.history.push("/Profile");
-    } else {
-      this.props.history.push("/Login");
-    }
-  }
   render() {
     return this.props.children;
   }
